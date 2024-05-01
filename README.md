@@ -1,5 +1,5 @@
-# coe_net_technical_assessment
-Unosquare CoE .NET Technical Assessment
+# Unosquare CoE .NET Technical Assessment
+This repository hosts the projects used to evaluate members of the Unosquare CoE .NET
 
 
 ## Versions
