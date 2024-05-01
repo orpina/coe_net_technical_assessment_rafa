@@ -8,3 +8,22 @@ Unosquare CoE .NET Technical Assessment
     - Microsoft.EntityFrameworkCore.Sqlite 8.0.4
     - Serilog.AspNetCore 8.0.1
 - Angular 17.3.5
+
+## How to Build
+
+- Frontend
+
+``` 
+pushd code/frontend/ta-web
+npm install
+npm start
+```
+
+- Backend
+
+``` 
+pushd code/backend/
+dotnet clean
+dotnet build
+dotnet run --project TA-API/TA-API.csproj
+``` 
