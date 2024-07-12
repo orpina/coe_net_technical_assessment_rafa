@@ -7,7 +7,7 @@ This repository hosts the projects used to evaluate members of the Unosquare CoE
 - .NET 8
     - Microsoft.EntityFrameworkCore.Sqlite 8.0.4
     - Serilog.AspNetCore 8.0.1
-- Angular 17.3.5
+- Angular 18.1.0
 
 ## How to Build
 

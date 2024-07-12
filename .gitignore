@@ -529,3 +529,4 @@ dist
 .pnp.*
 package-lock.json
 .vscode/
+code/frontend/ta-web/.angular/
