@@ -28,7 +28,7 @@
   "scripts": {
     "start": "vite",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "publish": "vite build"
+    "build": "vite build"
   },
   "type": "module",
   "version": "2025.01.20",
