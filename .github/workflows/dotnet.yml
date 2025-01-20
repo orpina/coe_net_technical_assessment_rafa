@@ -17,11 +17,11 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x    
+        dotnet-version: 9.0.x    
     - name: Build
       run: dotnet build
       working-directory: code/backend/TA-API
-  frontend:
+  frontend-ng:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -33,3 +33,15 @@ jobs:
     - name: Build
       run: npm test
       working-directory: code/frontend/ta-web
+  frontend-react:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v4.0.2
+    - name: Install packages
+      run: npm install
+      working-directory: code/frontend/ta-web-react
+    - name: Build
+      run: npm build
+      working-directory: code/frontend/ta-web-react
