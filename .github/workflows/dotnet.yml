@@ -31,7 +31,7 @@ jobs:
       run: npm install
       working-directory: code/frontend/ta-web
     - name: Build
-      run: npm test
+      run: npm build
       working-directory: code/frontend/ta-web
   frontend-react:
     runs-on: ubuntu-latest
@@ -43,5 +43,5 @@ jobs:
       run: npm install
       working-directory: code/frontend/ta-web-react
     - name: Build
-      run: npm build
+      run: npm publish
       working-directory: code/frontend/ta-web-react
