@@ -28,7 +28,7 @@ jobs:
     - name: Setup Node.js environment
       uses: actions/setup-node@v4.0.2
     - name: Install packages
-      run: npm install
+      run: npm install --force
       working-directory: code/frontend/ta-web
     - name: Build
       run: npm run build
@@ -40,7 +40,7 @@ jobs:
     - name: Setup Node.js environment
       uses: actions/setup-node@v4.0.2
     - name: Install packages
-      run: npm install
+      run: npm install --force
       working-directory: code/frontend/ta-web-react
     - name: Build
       run: npm run build
