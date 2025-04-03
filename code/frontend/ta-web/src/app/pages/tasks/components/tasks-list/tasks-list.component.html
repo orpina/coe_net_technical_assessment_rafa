@@ -7,7 +7,7 @@
             <mat-icon matSuffix (click)="clearSearch($event)">clear</mat-icon>
             }
         </mat-form-field>
-    </form>   
+    </form>
     <div class="search-button">
         <button mat-raised-button color="primary" (click)="search()">
             <mat-icon>search</mat-icon>Search
@@ -37,13 +37,21 @@
                 <div class="td-container" [style.width.px]="col.maxWidth" [style.justifyContent]="col.align">
                     <div [style.textAlign]="col.align" [style.maxWidth.px]="col.maxWidth">
                         @switch(col.type){
+                        @case("boolText"){
+                        <div [ngClass]="{
+                            'completed-task-class': (element | field:col.field | booleanToYesNo) === 'Yes',
+                            'pending-task-class': (element | field:col.field | booleanToYesNo) === 'No'
+                          }">
+                            {{ element | field:col.field | booleanToYesNo | uppercase }}
+                        </div>
+                        }
                         @case("options"){
                         <button mat-icon-button [matMenuTriggerFor]="optionsmenu">
                             <mat-icon>more_vert</mat-icon>
                         </button>
                         <mat-menu #optionsmenu="matMenu">
                             <div class="menu-container">
-                                <button mat-menu-item>
+                                <button mat-menu-item (click)="completeTask(element.id)">
                                     <mat-icon>done</mat-icon>
                                     <span>Complete</span>
                                 </button>

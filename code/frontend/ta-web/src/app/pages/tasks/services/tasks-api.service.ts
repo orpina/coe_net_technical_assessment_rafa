@@ -46,4 +46,14 @@ export class TasksApiService {
         })
       );
   }
+
+  complete(id: number): Observable<boolean> {
+    return this.http.put<boolean>(`${this._url}/${id}`, {})
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          this.snackbarService.displayError(`An error ocurred completing the task. ${err.status === 400 ? err.error : ''}`);
+          throw err;
+        })
+      );
+  }
 }

@@ -103,9 +103,9 @@ namespace TA_API.Controller
                 if (taskItemsRepo.GetAll().FirstOrDefault(c => c.Id == id) is null)
                     return BadRequest($"Task with ID: {id} not found");
 
-                var taskItem = await _taskItemService.CompleteTask(id);
+                var isSuccess = await _taskItemService.CompleteTask(id);
 
-                return Ok(taskItem);
+                return Ok(isSuccess);
             }
             catch (Exception ex)
             {

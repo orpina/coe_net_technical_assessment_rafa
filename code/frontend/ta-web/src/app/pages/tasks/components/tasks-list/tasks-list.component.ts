@@ -9,7 +9,7 @@ import { PaginatorConfig } from '../../../../shared/models/paginator-config.mode
 import { TasksSearchService } from '../../services/tasks-search.service';
 import { SortConfig } from '../../../../shared/models/sort-config.model';
 import { MatSortModule, Sort, SortDirection } from '@angular/material/sort';
-import { finalize } from 'rxjs';
+import { filter, finalize, switchMap, tap } from 'rxjs';
 import { PaginatedResponse } from '../../../../shared/models/paginated-response.model';
 import { AddTaskComponent } from '../../add-task/add-task.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,6 +19,11 @@ import { FieldPipe } from '../../../../shared/pipes/field.pipe';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { BaseFilterModel } from '../../../../shared/models/base-filter.model';
+import { CommonModule } from '@angular/common';
+import { BooleanToYesNoPipe } from '../../../../shared/pipes/bool-yes-no.pipe';
+import { BasicConfirmationComponent } from '../../../../shared/components/basic-confirmation.component';
+import { TasksApiService } from '../../services/tasks-api.service';
+import { SnackBarService } from '../../../../shared/services/snackbar.service';
 
 @Component({
   selector: 'app-tasks-list',
@@ -33,7 +38,9 @@ import { BaseFilterModel } from '../../../../shared/models/base-filter.model';
     ReactiveFormsModule,
     FormsModule,
     MatButtonModule,
-    FieldPipe
+    FieldPipe,
+    BooleanToYesNoPipe,
+    CommonModule
   ],
   templateUrl: './tasks-list.component.html',
   styleUrl: './tasks-list.component.css'
@@ -42,8 +49,10 @@ export class TasksListComponent {
   constructor(
     public dialog: MatDialog,
     private tasksSearchService: TasksSearchService,
+    private tasksApiService: TasksApiService,
     private spinnerDialogService: SpinnerDialogService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackbarService: SnackBarService,
   ) { }
 
   filterForm!: FormGroup;
@@ -58,7 +67,7 @@ export class TasksListComponent {
       field: 'description', title: 'Description', align: 'left', type: 'text'
     },
     {
-      field: 'isCompleted', title: 'Completed', align: 'center', type: 'text', maxWidth: 100
+      field: 'isCompleted', title: 'Completed', align: 'left', type: 'boolText', maxWidth: 100
     },
     {
       field: 'options', title: '', align: 'center', type: 'options', maxWidth: 50, sortDisabled: true
@@ -102,6 +111,29 @@ export class TasksListComponent {
         next: (response: PaginatedResponse<TaskModel>) => {
           this._totalItemsCount = response.totalItems;
           this.tasksList.update(() => response.items)
+        }
+      });
+  }
+
+  completeTask(id: number) {
+    const dialogRef = this.dialog.open(BasicConfirmationComponent, {
+      data: {
+        message: "¿Do you want to mark this task as completed. This can only be undone by a manager?"
+      },
+      disableClose: true
+    });
+
+    dialogRef.afterClosed()
+      .pipe(
+        filter(dialogResponse => !!dialogResponse),
+        tap(() => this.spinnerDialogService.startSpinner()),
+        switchMap(() => this.tasksApiService.complete(id)),
+        finalize(() => this.spinnerDialogService.closeSpinner())
+      )
+      .subscribe({
+        next: () => {
+          this.snackbarService.displaySuccess("Task completed.")
+          this.search();
         }
       });
   }

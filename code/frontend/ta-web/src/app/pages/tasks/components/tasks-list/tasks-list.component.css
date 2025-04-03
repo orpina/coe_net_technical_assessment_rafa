@@ -8,3 +8,11 @@
 .filterInput {
     width: 400px;
 }
+
+.completed-task-class {
+    color: green;
+}
+
+.pending-task-class {
+    color: red;
+}
