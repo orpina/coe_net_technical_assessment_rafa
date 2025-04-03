@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError } from 'rxjs';
 import { TaskQuery } from '../models/task-query.model';
 import { PaginatedResponse } from '../../../shared/models/paginated-response.model';
+import { TaskModel } from '../models/task.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,15 @@ export class TasksApiService {
 
   getPaginated<T>(query: TaskQuery): Observable<PaginatedResponse<T>> {
     return this.http.post<PaginatedResponse<T>>(`${this._url}/get-paginated`, query);
+  }
+
+  add(taskItem: TaskModel): Observable<any> {
+    return this.http.post(this._url, taskItem)
+      .pipe(
+        catchError((err) => {
+          console.log(err);
+          throw err;
+        })
+      );
   }
 }

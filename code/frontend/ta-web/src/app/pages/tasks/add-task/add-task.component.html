@@ -1,1 +1,32 @@
-<p>add-task works!</p>
+<h2 mat-dialog-title>Add Task</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="taskForm">
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Title</mat-label>
+      <input matInput name="title" formControlName="title" id="title" cdkFocusInitial />
+      <mat-hint align="end">{{ titleControl?.value?.length ?? 0}} / 250</mat-hint>
+      @if(titleControl && titleControl.invalid){
+      <mat-error>
+        @if(titleControl.errors?.['required']){ Required }
+        @else if(titleControl.errors?.['maxlength']){ Max 250 characters }
+      </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Description</mat-label>
+      <textarea matInput name="description" formControlName="description" id="description"></textarea>
+      <mat-hint align="end">{{ descriptionControl?.value?.length ?? 0}} / 500</mat-hint>
+      @if(descriptionControl && descriptionControl.invalid){
+      <mat-error>
+        @if(descriptionControl.errors?.['required']){ Required }
+        @else if(descriptionControl.errors?.['maxlength']){ Max 500 characters}
+      </mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button cdkFocusInitial color="primary" (click)="save()" [disabled]="isInvalid">Create</button>
+</mat-dialog-actions>

@@ -2,9 +2,9 @@ import { Component, WritableSignal, signal } from '@angular/core';
 import { TaskModel } from '../../models/task.model';
 import { MatTableModule } from '@angular/material/table';
 import { ColumnDefinition } from '../../../../shared/models/table-col-definition.model';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SpinnerDialogService } from '../../../../shared/services/spinner-dialog.service';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PaginatorConfig } from '../../../../shared/models/paginator-config.model';
 import { TasksSearchService } from '../../services/tasks-search.service';
 import { SortConfig } from '../../../../shared/models/sort-config.model';
@@ -16,6 +16,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { FieldPipe } from '../../../../shared/pipes/field.pipe';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-tasks-list',
@@ -25,6 +27,11 @@ import { FieldPipe } from '../../../../shared/pipes/field.pipe';
     MatSortModule,
     MatMenuModule,
     MatIconModule,
+    MatPaginatorModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatButtonModule,
     FieldPipe
   ],
   templateUrl: './tasks-list.component.html',
