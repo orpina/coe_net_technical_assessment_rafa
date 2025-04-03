@@ -5,6 +5,7 @@ import { TaskQuery } from '../models/task-query.model';
 import { PaginatedResponse } from '../../../shared/models/paginated-response.model';
 import { TaskModel } from '../models/task.model';
 import { SnackBarService } from '../../../shared/services/snackbar.service';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,11 @@ export class TasksApiService {
     private http: HttpClient,
     private snackbarService: SnackBarService) { }
 
-  // private _url = "http://localhost:8080/api/tasks";
-  private _url = "https://localhost:7189/api/tasks";
+  private _url = environment.connections.api.assessmentApi;
+  private _endpoint = "tasks";
 
   getTasks(): Observable<TaskModel[]> {
-    return this.http.get<TaskModel[]>(`${this._url}`)
+    return this.http.get<TaskModel[]>(`${this._url}${this._endpoint}`)
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.snackbarService.displayError(`An error ocurred fetching the tasks. ${err.status === 400 ? err.error : ''}`);
@@ -28,7 +29,7 @@ export class TasksApiService {
   }
 
   getPaginated<T>(query: TaskQuery): Observable<PaginatedResponse<T>> {
-    return this.http.post<PaginatedResponse<T>>(`${this._url}/get-paginated`, query)
+    return this.http.post<PaginatedResponse<T>>(`${this._url}${this._endpoint}/get-paginated`, query)
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.snackbarService.displayError(`An error ocurred fetching the tasks. ${err.status === 400 ? err.error : ''}`);
@@ -38,7 +39,7 @@ export class TasksApiService {
   }
 
   add(taskItem: TaskModel): Observable<TaskModel> {
-    return this.http.post<TaskModel>(this._url, taskItem)
+    return this.http.post<TaskModel>(`${this._url}${this._endpoint}`, taskItem)
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.snackbarService.displayError(`An error ocurred saving the task. ${err.status === 400 ? err.error : ''}`);
@@ -48,7 +49,7 @@ export class TasksApiService {
   }
 
   complete(id: number): Observable<boolean> {
-    return this.http.put<boolean>(`${this._url}/${id}`, {})
+    return this.http.put<boolean>(`${this._url}${this._endpoint}/${id}`, {})
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.snackbarService.displayError(`An error ocurred completing the task. ${err.status === 400 ? err.error : ''}`);

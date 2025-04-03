@@ -24,6 +24,7 @@ namespace TA_API.Services
         public PaginatedResponse<T> GetPaginated<T>(TaskQuery query)
         {
             query!.SortProperty = query.IsValidSortProperty<TaskItem, TaskQuery>() ? query.SortProperty : "Id";
+            query!.SearchValue = query?.SearchValue?.Trim();
 
             var items = _taskItemsRepo.GetAll();
 
