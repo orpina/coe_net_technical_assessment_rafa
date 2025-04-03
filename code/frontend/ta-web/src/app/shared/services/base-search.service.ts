@@ -3,6 +3,7 @@ import { PaginatorConfig } from "../models/paginator-config.model";
 import { SortConfig } from "../models/sort-config.model";
 import { Observable } from "rxjs";
 import { PaginatedResponse } from "../models/paginated-response.model";
+import { BaseFilterModel } from "../models/base-filter.model";
 
 type NewType = PaginatorConfig;
 
@@ -28,5 +29,5 @@ export abstract class BaseSearchService {
     baseSortConfig: SortConfig;
     baseItemsPerPage: number[];
 
-    abstract getPaginated<T>(params: any): Observable<PaginatedResponse<T>>
+    abstract getPaginated<T>(params: BaseFilterModel): Observable<PaginatedResponse<T>>
 }

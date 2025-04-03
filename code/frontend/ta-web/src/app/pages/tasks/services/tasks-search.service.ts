@@ -6,6 +6,7 @@ import { PaginatorConfig } from "../../../shared/models/paginator-config.model";
 import { PaginatedResponse } from "../../../shared/models/paginated-response.model";
 import { Observable } from "rxjs";
 import { TaskQuery } from "../models/task-query.model";
+import { BaseFilterModel } from "../../../shared/models/base-filter.model";
 
 @Injectable({ providedIn: 'root' })
 
@@ -23,7 +24,7 @@ export class TasksSearchService extends BaseSearchService {
     private _pageConfig: PaginatorConfig;
     private _itemsPerPage: number[];
 
-    getPaginated<TaskModel>(params: any): Observable<PaginatedResponse<TaskModel>> {
+    getPaginated<TaskModel>(params: BaseFilterModel): Observable<PaginatedResponse<TaskModel>> {
         const query = <TaskQuery>{
             ...this._sortConfig,
             ...this._pageConfig,

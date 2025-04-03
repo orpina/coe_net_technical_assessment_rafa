@@ -28,14 +28,4 @@ export class SnackBarService {
             });
 
     }
-
-    displayWarn(message: string, duration: number = 2000, action: string | undefined = undefined): void {
-        this.snackBar.open(message,
-            action,
-            {
-                duration,
-                panelClass: 'snack-bar-warn'
-            });
-
-    }
 }

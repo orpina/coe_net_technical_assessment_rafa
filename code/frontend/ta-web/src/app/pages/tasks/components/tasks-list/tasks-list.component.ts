@@ -2,7 +2,7 @@ import { Component, WritableSignal, signal } from '@angular/core';
 import { TaskModel } from '../../models/task.model';
 import { MatTableModule } from '@angular/material/table';
 import { ColumnDefinition } from '../../../../shared/models/table-col-definition.model';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SpinnerDialogService } from '../../../../shared/services/spinner-dialog.service';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PaginatorConfig } from '../../../../shared/models/paginator-config.model';
@@ -18,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FieldPipe } from '../../../../shared/pipes/field.pipe';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { BaseFilterModel } from '../../../../shared/models/base-filter.model';
 
 @Component({
   selector: 'app-tasks-list',
@@ -42,9 +43,10 @@ export class TasksListComponent {
     public dialog: MatDialog,
     private tasksSearchService: TasksSearchService,
     private spinnerDialogService: SpinnerDialogService,
+    private fb: FormBuilder
   ) { }
 
-  filter = new FormControl();
+  filterForm!: FormGroup;
   tasksList: WritableSignal<TaskModel[]> = signal([]);
 
   private _totalItemsCount: number = 0;
@@ -56,11 +58,15 @@ export class TasksListComponent {
       field: 'description', title: 'Description', align: 'left', type: 'text'
     },
     {
+      field: 'isCompleted', title: 'Completed', align: 'center', type: 'text', maxWidth: 100
+    },
+    {
       field: 'options', title: '', align: 'center', type: 'options', maxWidth: 50, sortDisabled: true
     }
   ];
 
   ngOnInit(): void {
+    this._initForm();
     this.search();
   }
 
@@ -86,9 +92,7 @@ export class TasksListComponent {
   search() {
     this.spinnerDialogService.startSpinner();
 
-    const searchParams = {
-      filter: this.filter?.value
-    };
+    const searchParams = this.filterForm.getRawValue() as BaseFilterModel;
 
     this.tasksSearchService.getPaginated<TaskModel>(searchParams)
       .pipe(
@@ -98,8 +102,7 @@ export class TasksListComponent {
         next: (response: PaginatedResponse<TaskModel>) => {
           this._totalItemsCount = response.totalItems;
           this.tasksList.update(() => response.items)
-        },
-        error: (err) => console.log(err)
+        }
       });
   }
 
@@ -112,6 +115,22 @@ export class TasksListComponent {
     dialogRef.afterClosed().subscribe(() => {
       this.search();
     });
+  }
+
+  clearSearch(event: Event) {
+    event.stopPropagation();
+    this.filterControl?.reset();
+    this.search();
+  }
+
+  private _initForm() {
+    this.filterForm = this.fb.group({
+      filter: new FormControl<string | undefined>(undefined),
+    });
+  }
+
+  get filterControl(): FormControl | null {
+    return this.filterForm.get('filter') as FormControl;
   }
 
   get paginatorLength(): number {

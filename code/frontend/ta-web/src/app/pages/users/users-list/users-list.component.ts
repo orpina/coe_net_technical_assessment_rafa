@@ -4,6 +4,7 @@ import { UserModel } from '../models/user.model';
 import { MatTableModule } from '@angular/material/table';
 import { SpinnerDialogService } from '../../../shared/services/spinner-dialog.service';
 import { finalize } from 'rxjs';
+import { SnackBarService } from '../../../shared/services/snackbar.service';
 
 @Component({
   selector: 'app-users-list',
@@ -18,10 +19,11 @@ export class UsersListComponent implements OnInit {
   constructor(
     private usersAPIService: UsersApiService,
     private spinnerDialogService: SpinnerDialogService,
+    private snackbarService: SnackBarService
   ) { }
 
   usersList: UserModel[] = [];
-  displayedColumns: string[] = ['name', 'email'];
+  displayedColumns: string[] = ['rowIndex','name', 'email', 'company'];
 
   ngOnInit(): void {
     this.search();
@@ -37,8 +39,7 @@ export class UsersListComponent implements OnInit {
       .subscribe({
         next: (users: UserModel[]) => {
           this.usersList = users;
-        },
-        error: (err) => console.log(err)
+        }
       });
   }
 }

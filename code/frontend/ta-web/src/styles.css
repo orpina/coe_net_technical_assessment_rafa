@@ -25,3 +25,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .transparent .mat-mdc-dialog-surface {
     box-shadow: none !important;
 }
+
+.mat-mdc-snack-bar-container.snack-bar-success {
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-container-color: #28a745;
+    --mdc-snackbar-supporting-text-color: #fff;
+}
+
+.mat-mdc-snack-bar-container.snack-bar-error {
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-container-color: #cc0c39;
+    --mdc-snackbar-supporting-text-color: #fff;
+}

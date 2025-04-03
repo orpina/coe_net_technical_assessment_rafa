@@ -1,0 +1,10 @@
+.filterForm {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    font-size: 10px;
+}
+
+.filterInput {
+    width: 400px;
+}

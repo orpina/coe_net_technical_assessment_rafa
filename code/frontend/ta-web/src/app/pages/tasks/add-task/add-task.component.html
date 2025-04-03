@@ -3,7 +3,7 @@
   <form [formGroup]="taskForm">
     <mat-form-field appearance="outline" floatLabel="always">
       <mat-label>Title</mat-label>
-      <input matInput name="title" formControlName="title" id="title" cdkFocusInitial />
+      <input matInput name="title" formControlName="title" id="title" required  cdkFocusInitial />
       <mat-hint align="end">{{ titleControl?.value?.length ?? 0}} / 250</mat-hint>
       @if(titleControl && titleControl.invalid){
       <mat-error>
@@ -14,13 +14,24 @@
     </mat-form-field>
     <mat-form-field appearance="outline" floatLabel="always">
       <mat-label>Description</mat-label>
-      <textarea matInput name="description" formControlName="description" id="description"></textarea>
+      <textarea matInput name="description" formControlName="description" id="description" required ></textarea>
       <mat-hint align="end">{{ descriptionControl?.value?.length ?? 0}} / 500</mat-hint>
       @if(descriptionControl && descriptionControl.invalid){
       <mat-error>
         @if(descriptionControl.errors?.['required']){ Required }
         @else if(descriptionControl.errors?.['maxlength']){ Max 500 characters}
       </mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Assigned To (Optional)</mat-label>
+      <mat-select matInput name="assignedUser" formControlName="assignedUserId" id="assignedUser">
+        @for (user of usersKeyValue; track user) {
+        <mat-option [value]="user.key">{{user.value}}</mat-option>
+        }
+      </mat-select>
+      @if(assignedUserControl?.value){
+        <mat-icon matSuffix (click)="clearUser($event)">clear</mat-icon>   
       }
     </mat-form-field>
   </form>

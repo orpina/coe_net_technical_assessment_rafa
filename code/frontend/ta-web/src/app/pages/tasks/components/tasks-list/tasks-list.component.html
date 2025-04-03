@@ -1,10 +1,15 @@
-<div style="display: flex; flex-direction: row; column-gap: 10px; font-size: 10px;">
-    <mat-form-field appearance="outline" style="width: 300px" [formControl]="filter" ngDefaultControl>
-        <mat-label>Search</mat-label>
-        <input matInput placeholder="Search by title or description">
-    </mat-form-field>
+<div class="filterForm">
+    <form [formGroup]="filterForm">
+        <mat-form-field appearance="outline" class="filterInput">
+            <mat-label>Search</mat-label>
+            <input matInput formControlName="filter" placeholder="Search by title or description">
+            @if(filterControl?.value){
+            <mat-icon matSuffix (click)="clearSearch($event)">clear</mat-icon>
+            }
+        </mat-form-field>
+    </form>   
     <div class="search-button">
-        <button mat-raised-button color="primary" (click)="search()" style="height: 40px;">
+        <button mat-raised-button color="primary" (click)="search()">
             <mat-icon>search</mat-icon>Search
         </button>
     </div>
@@ -15,14 +20,12 @@
         </button>
     </div>
 </div>
-
 <div class="header-container">
     <span class="records-counter">Tasks: {{ paginatorLength }}</span>
     <mat-paginator [length]="paginatorLength" [pageSizeOptions]="itemsPerPage" showFirstLastButtons
         (page)="handlePageEvent($event)">
     </mat-paginator>
 </div>
-
 <div class="table-container">
     <table mat-table [dataSource]="tasksList()" class="table" matSort [matSortActive]="sortActive"
         [matSortDirection]="sortDirection" (matSortChange)="sortChange($event)">

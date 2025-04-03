@@ -54,6 +54,7 @@ namespace TA_API.Services
             catch(Exception ex)
             {
                 _logger.LogError(ex, "An error occurred when getting users from Typicode.");
+                throw;
             }
 
             return [];
