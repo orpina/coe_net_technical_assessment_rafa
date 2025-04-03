@@ -33,6 +33,9 @@ namespace TA_API.Services
                                          (!string.IsNullOrWhiteSpace(c.Description) && c.Description.Contains(query.SearchValue)));
             }
 
+            if (query?.AssignedUserId.HasValue == true)
+                items = items.Where(c => c.AssignedUserId == query.AssignedUserId);
+
             var itemsCount = items.Count();
 
             items = items.OrderBy($"{query!.SortProperty} {query!.SortDirection}");

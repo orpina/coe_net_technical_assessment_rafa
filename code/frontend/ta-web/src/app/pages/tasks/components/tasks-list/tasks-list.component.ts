@@ -9,7 +9,7 @@ import { PaginatorConfig } from '../../../../shared/models/paginator-config.mode
 import { TasksSearchService } from '../../services/tasks-search.service';
 import { SortConfig } from '../../../../shared/models/sort-config.model';
 import { MatSortModule, Sort, SortDirection } from '@angular/material/sort';
-import { filter, finalize, switchMap, tap } from 'rxjs';
+import { filter, finalize, map, switchMap, tap } from 'rxjs';
 import { PaginatedResponse } from '../../../../shared/models/paginated-response.model';
 import { AddTaskComponent } from '../../add-task/add-task.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,12 +18,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { FieldPipe } from '../../../../shared/pipes/field.pipe';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { BaseFilterModel } from '../../../../shared/models/base-filter.model';
 import { CommonModule } from '@angular/common';
 import { BooleanToYesNoPipe } from '../../../../shared/pipes/bool-yes-no.pipe';
 import { BasicConfirmationComponent } from '../../../../shared/components/basic-confirmation.component';
 import { TasksApiService } from '../../services/tasks-api.service';
 import { SnackBarService } from '../../../../shared/services/snackbar.service';
+import { KeyValueModel } from '../../../../shared/models/key-value.model';
+import { TaskSearchFilterModel } from '../../models/task-search-filters.model';
+import { MatSelectModule } from '@angular/material/select';
+import { UsersApiService } from '../../../users/services/users-api.service';
+import { UserModel } from '../../../users/models/user.model';
 
 @Component({
   selector: 'app-tasks-list',
@@ -40,7 +44,8 @@ import { SnackBarService } from '../../../../shared/services/snackbar.service';
     MatButtonModule,
     FieldPipe,
     BooleanToYesNoPipe,
-    CommonModule
+    CommonModule,
+    MatSelectModule
   ],
   templateUrl: './tasks-list.component.html',
   styleUrl: './tasks-list.component.css'
@@ -53,10 +58,12 @@ export class TasksListComponent {
     private spinnerDialogService: SpinnerDialogService,
     private fb: FormBuilder,
     private snackbarService: SnackBarService,
+    private usersApiService: UsersApiService
   ) { }
 
   filterForm!: FormGroup;
   tasksList: WritableSignal<TaskModel[]> = signal([]);
+  usersKeyValue: KeyValueModel[] = [];
 
   private _totalItemsCount: number = 0;
   private _columns: ColumnDefinition[] = [
@@ -75,6 +82,14 @@ export class TasksListComponent {
   ];
 
   ngOnInit(): void {
+    this.usersApiService.getUsers()
+      .pipe(map((users: UserModel[]) => users.map(u => (<KeyValueModel>{ key: u.id, value: u.name }))))
+      .subscribe({
+        next: (users: KeyValueModel[]) => {
+          this.usersKeyValue = users;
+        }
+      });
+
     this._initForm();
     this.search();
   }
@@ -101,7 +116,7 @@ export class TasksListComponent {
   search() {
     this.spinnerDialogService.startSpinner();
 
-    const searchParams = this.filterForm.getRawValue() as BaseFilterModel;
+    const searchParams = this.filterForm.getRawValue() as TaskSearchFilterModel;
 
     this.tasksSearchService.getPaginated<TaskModel>(searchParams)
       .pipe(
@@ -155,9 +170,16 @@ export class TasksListComponent {
     this.search();
   }
 
+  clearUser(event: Event) {
+    event.stopPropagation();
+    this.assignedUserControl?.reset();
+    this.search();
+  }
+
   private _initForm() {
     this.filterForm = this.fb.group({
       filter: new FormControl<string | undefined>(undefined),
+      assignedUserId: new FormControl<string | undefined>(undefined)
     });
   }
 
@@ -187,5 +209,9 @@ export class TasksListComponent {
 
   get sortDirection(): SortDirection {
     return this.tasksSearchService.sortConfig.sortDirection;
+  }
+
+  get assignedUserControl(): FormControl | null {
+    return this.filterForm.get('assignedUserId') as FormControl;
   }
 }

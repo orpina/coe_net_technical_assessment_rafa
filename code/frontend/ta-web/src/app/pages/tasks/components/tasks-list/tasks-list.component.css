@@ -5,6 +5,11 @@
     font-size: 10px;
 }
 
+.filterForm form{
+    display: flex;
+    column-gap: 5px;
+}
+
 .filterInput {
     width: 400px;
 }
@@ -15,4 +20,8 @@
 
 .pending-task-class {
     color: red;
+}
+
+.odd-row{
+    background-color: lightgray;
 }

@@ -7,6 +7,17 @@
             <mat-icon matSuffix (click)="clearSearch($event)">clear</mat-icon>
             }
         </mat-form-field>
+        <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>Assigned User</mat-label>
+            <mat-select matInput name="assignedUser" formControlName="assignedUserId" id="assignedUser">
+              @for (user of usersKeyValue; track user) {
+              <mat-option [value]="user.key">{{user.value}}</mat-option>
+              }
+            </mat-select>
+            @if(assignedUserControl?.value){
+              <mat-icon matSuffix (click)="clearUser($event)">clear</mat-icon>   
+            }
+          </mat-form-field>
     </form>
     <div class="search-button">
         <button mat-raised-button color="primary" (click)="search()">
@@ -51,7 +62,7 @@
                         </button>
                         <mat-menu #optionsmenu="matMenu">
                             <div class="menu-container">
-                                <button mat-menu-item (click)="completeTask(element.id)">
+                                <button mat-menu-item (click)="completeTask(element.id)" [disabled]="element.isCompleted">
                                     <mat-icon>done</mat-icon>
                                     <span>Complete</span>
                                 </button>
@@ -65,6 +76,6 @@
         </ng-container>
         }
         <tr mat-header-row *matHeaderRowDef="columnNames; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: columnNames;" class="rows"></tr>
+        <tr mat-row *matRowDef="let row, let i = index; columns: columnNames;" class="rows" [ngClass]="{'odd-row': i % 2 !== 0}"></tr>
     </table>
 </div>

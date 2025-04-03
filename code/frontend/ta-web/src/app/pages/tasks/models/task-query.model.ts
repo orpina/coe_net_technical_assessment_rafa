@@ -3,4 +3,5 @@ import { SortConfig } from "../../../shared/models/sort-config.model";
 
 export interface TaskQuery extends SortConfig, PaginatorConfig{
     searchValue?: string;
+    assignedUserId?: number;
 }
