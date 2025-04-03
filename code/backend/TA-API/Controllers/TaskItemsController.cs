@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using TA_API.Entities.EntityModels;
 using TA_API.Entities.RequestModels;
+using TA_API.Entities.ResponseModels;
 using TA_API.Repository;
 using TA_API.Services.Interfaces;
 
@@ -29,6 +31,21 @@ namespace TA_API.Controller
                 _logger.LogError(ex, "An error occurred when getting the tasks.");
                 return this.StatusCode(500, ex.InnerException?.Message ?? ex.Message);
             }          
+        }
+
+        [HttpPost]
+        [Route("get-paginated")]
+        public IActionResult GetPaginated([FromBody] TaskQuery query)
+        {
+            try
+            {
+                var response = _taskItemService.GetPaginated<TaskItemVM>(query);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(500, ex.InnerException?.Message ?? ex.Message);
+            }
         }
 
         [HttpGet]

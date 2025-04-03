@@ -7,6 +7,8 @@ namespace TA_API.Services.Interfaces
     {
         IEnumerable<TaskItemVM> GetAllTaskItems();
 
+        PaginatedResponse<T> GetPaginated<T>(TaskQuery query);
+
         TaskItemVM GetTaskItem(int taskId);
 
         Task<TaskItemVM> Create(UpsertTaskItemRequest request);
