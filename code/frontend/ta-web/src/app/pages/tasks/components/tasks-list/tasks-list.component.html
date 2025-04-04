@@ -50,10 +50,10 @@
                         @switch(col.type){
                         @case("boolText"){
                         <div [ngClass]="{
-                            'completed-task-class': (element | field:col.field | booleanToYesNo) === 'Yes',
-                            'pending-task-class': (element | field:col.field | booleanToYesNo) === 'No'
+                            'completed-task-class': (element[col.field] | booleanToYesNo) === 'Yes',
+                            'pending-task-class': (element[col.field] | booleanToYesNo) === 'No'
                           }">
-                            {{ element | field:col.field | booleanToYesNo | uppercase }}
+                            {{ element[col.field] | booleanToYesNo | uppercase }}
                         </div>
                         }
                         @case("options"){
