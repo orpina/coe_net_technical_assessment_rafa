@@ -5,16 +5,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { SnackBarService } from '../../../shared/services/snackbar.service';
-import { SpinnerDialogService } from '../../../shared/services/spinner-dialog.service';
-import { TaskModel } from '../models/task.model';
-import { TasksApiService } from '../services/tasks-api.service';
+import { SnackBarService } from '../../../../shared/services/snackbar.service';
+import { SpinnerDialogService } from '../../../../shared/services/spinner-dialog.service';
+import { TaskModel } from '../../models/task.model';
+import { TasksApiService } from '../../services/tasks-api.service';
 import { finalize, map } from 'rxjs';
 import { MatSelectModule } from '@angular/material/select';
-import { UsersApiService } from '../../users/services/users-api.service';
-import { UserModel } from '../../users/models/user.model';
+import { UsersApiService } from '../../../users/services/users-api.service';
+import { UserModel } from '../../../users/models/user.model';
 import { MatIconModule } from '@angular/material/icon';
-import { KeyValueModel } from '../../../shared/models/key-value.model';
+import { KeyValueModel } from '../../../../shared/models/key-value.model';
 
 @Component({
   selector: 'app-add-task',

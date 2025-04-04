@@ -2,7 +2,7 @@ export const environment = {
     production: false,
     connections: {
         api: {
-            //ng server
+            //local debug
             //assessmentApi: "https://localhost:7189/api/"
 
             //docker

@@ -11,7 +11,7 @@ import { SortConfig } from '../../../../shared/models/sort-config.model';
 import { MatSortModule, Sort, SortDirection } from '@angular/material/sort';
 import { filter, finalize, map, switchMap, tap } from 'rxjs';
 import { PaginatedResponse } from '../../../../shared/models/paginated-response.model';
-import { AddTaskComponent } from '../../add-task/add-task.component';
+import { AddTaskComponent } from '../add-task/add-task.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
